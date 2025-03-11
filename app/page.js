@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "./Weather.module.css";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -37,10 +36,13 @@ export default function Home() {
     };
     getDataCountry();
   }, []);
+
   console.log(cities);
+
   const handleInputChange = (event) => {
     setInput(event.target.value);
   };
+
   const filteredCities =
     input === ""
       ? []
@@ -70,81 +72,95 @@ export default function Home() {
   );
 
   return (
-    <div className={styles.page}>
-      <div className="w-screen flex object-contain justify-center bg-rgb(26, 24, 24)">
-        <div className="w-1/2">
-          <img
-            src="/images/light.png"
-            className="w-full object-cover h-1200px"
-          ></img>
-          <div className="w-full object-cover h-1200px bg-rgba(243, 244, 246, 1)">
-            <img src="/images/search.png"></img>
+    <div className="w-[100vw] flex object-contain justify-center bg-[#1a1818]">
+      <div className="w-[50%]">
+        <img
+          src="/images/light.png"
+          className="w-[100%] object-cover h-[1200px]"
+        ></img>
 
-            <input
-              type="search"
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Search"
-            />
+        <div className="absolute top-[40px] left-[40px] w-[567px] h-[80px] rounded-[48px] bg-[#FFFFFF] shadow-[0px_12px_24px_0px_rgba(0,0,0,0.06)] flex items-center pl-[24px]">
+          <img src="/images/search.png"></img>
+
+          <input
+            className="w-[400px] h-[44px] border-none text-[32px]"
+            type="search"
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Enter city name"
+          />
+        </div>
+
+        <div className="rounded-[24px] bg-[#FFFFFFCC] absolute top-[160px] left-[40px] text-[28px] font-bold p-[9px] z-[5]">
+          {filteredCities?.length > 0 &&
+            filteredCities?.map((item, index) => (
+              <div key={index} className="cursor-pointer">
+                {item.cities.map((itm, idx) => (
+                  <div
+                    key={idx}
+                    className="hover:bg-[#1118271a] p-[5px] rounded-[8px]"
+                    onClick={() => setCity(`${itm}, ${item.country}`)}
+                  >
+                    {itm}, {item.country}
+                  </div>
+                ))}
+              </div>
+            ))}
+        </div>
+
+        <div className="h-[832px] w-[414px] bg-[#FFFFFFBF] backdrop-blur-[24px] absolute top-[230px] left-[193px] rounded-[48px] p-[48px] flex flex-col">
+          <div className="text-[#111827] text-[18px]">
+            {data?.location.localtime.slice(0, 10)}
           </div>
-          <div className="rounded-3xl bg-rgba(0, 0, 0, 1) bg-rgba(17, 24, 39, 1) bg-rgba(255, 255, 255, 0.8) absolute top-160px left-40px text-[28px] font-bold p-9px z-5">
-            {filteredCities?.length > 0 &&
-              filteredCities?.map((item, index) => (
-                <div key={index} className={styles.searchResult}>
-                  {item.cities.map((itm, idx) => (
-                    <div
-                      key={idx}
-                      className={styles.filteredcity}
-                      onClick={() => setCity(`${itm}, ${item.country}`)}
-                    >
-                      {itm}, {item.country}
-                    </div>
-                  ))}
-                </div>
-              ))}
+          <div className="text-[48px] text-[#111827] font-extrabold">
+            {data?.location.name}
           </div>
-          <div className="h-832px w-414px bg-rgba(255, 255, 255, 0.75) backdrop-blur-24 absolute top-230px left-193px rounded-[48px] p-48px">
-            <div className="text-rgba(17, 24, 39, 1) text-lg">
-              {data?.location.localtime.slice(0, 10)}
-            </div>
-            <div className="text-[48px] text-rgba(17, 24, 39, 1) text-extrabold">
-              {data?.location.name}
-            </div>
-            <img src="/images/sun.png"></img>
-            <div className="bg-linear-gradient(180deg, #111827 0%, #6b7280 100%) bg-clip-text text-transparent text-[144px] text-extrabold">
-              {data?.current.temp_c}°
-            </div>
-            <div className="text-[24px] text-rgba(255, 142, 39, 1) text-extrabold">
-              {data?.current.condition.text}
-            </div>
-            <div className="flex gap-[65px] absolute bottom-48px left-46px">
-              <img src="/images/home.png" className="h-32px w-32px"></img>
-              <img src="/images/location.png" className="h-32px w-32px"></img>
-              <img src="/images/heart.png" className="h-32px w-32px"></img>
-              <img src="/images/user.png" className="h-32px w-32px"></img>
-            </div>
+          <img
+            src="/images/sun.png"
+            className="w-[277px] h-[277px] mt-[74px] ml-[20px]"
+          ></img>
+          <div className="bg-gradient-to-b from-[#111827] to-[#6b7280] bg-clip-text text-transparent text-[144px] font-extrabold">
+            {data?.current.temp_c}°
+          </div>
+          <div className="text-[24px] text-[#FF8E27] font-extrabold">
+            {data?.current.condition.text}
+          </div>
+          <div className="flex gap-[65px] absolute bottom-[48px] left-[46px]">
+            <img src="/images/home.png" className="w-[32px] h-[32px]"></img>
+            <img src="/images/location.png" className="w-[32px] h-[32px]"></img>
+            <img src="/images/heart.png" className="w-[32px] h-[32px]"></img>
+            <img src="/images/user.png" className="w-[32px] h-[32px]"></img>
           </div>
         </div>
-        <div className={styles.right}>
-          <img src="/images/dark.png"></img>
-          <div className={styles.cardRight}>
-            <div className={styles.dateNight}>
-              {data?.location.localtime.slice(0, 10)}
-            </div>
-            <img src="/images/moon.png"></img>
-            <div className={styles.cityNight}>{data?.location?.name}</div>
-            <div className={styles.temperatureNight}>
-              {nightForecast?.temp_c || data?.current?.temp_c}°
-            </div>
-            <div className={styles.conditionNight}>
-              {nightForecast?.condition?.text || "Night forecast"}
-            </div>
-            <div className={styles.icons}>
-              <img src="/images/home.png"></img>
-              <img src="/images/location.png"></img>
-              <img src="/images/heart.png"></img>
-              <img src="/images/user.png"></img>
-            </div>
+      </div>
+
+      <div className="w-[50%]">
+        <img
+          src="/images/dark.png"
+          className="w-[100%] object-cover h-[1200px] bg-[#F3F4F6]"
+        ></img>
+        <div className="h-[832px] w-[414px] bg-[#111827BF] backdrop-blur-[24px] absolute top-[230px] right-[193px] rounded-[48px] p-[48px]">
+          <div className="text-[#9CA3AF] text-[18px]">
+            {data?.location.localtime.slice(0, 10)}
+          </div>
+          <img
+            src="/images/moon.png"
+            className="w-[277px] h-[277px] mt-[144px] ml-[20px]"
+          ></img>
+          <div className="absolute top-[70px] text-[48px] text-[#FFFFFF] font-extrabold">
+            {data?.location?.name}
+          </div>
+          <div className="bg-gradient-to-b from-[#F9FAFB] to-[#F9FAFB00] bg-clip-text text-transparent text-[144px] font-extrabold">
+            {nightForecast?.temp_c || data?.current?.temp_c}°
+          </div>
+          <div className="text-[24px] text-[#FF8E27] font-extrabold">
+            {nightForecast?.condition?.text || "Night forecast"}
+          </div>
+          <div className="flex gap-[65px] absolute bottom-[48px] left-[46px]">
+            <img src="/images/home.png" className="w-[32px] h-[32px]"></img>
+            <img src="/images/location.png" className="w-[32px] h-[32px]"></img>
+            <img src="/images/heart.png" className="w-[32px] h-[32px]"></img>
+            <img src="/images/user.png" className="w-[32px] h-[32px]"></img>
           </div>
         </div>
       </div>
